@@ -10,12 +10,10 @@ use Livewire\Component;
 
 class Chat extends Component
 {
-    #[Validate('required|min:1')]
     public $value = '';
-
     public $users;
     public $messages;
-    private $authenticatedUser;
+    public $authenticatedUser;
     public $selectedUser;
 
     public function mount()
@@ -36,9 +34,14 @@ class Chat extends Component
         $this->authenticatedUser = Auth::user();
         $this->selectedUser = $id;
 
-        $messages = Message::all()->where('sentFrom', $this->authenticatedUser->id)
-            ->where('sentTo', $this->selectedUser);
-        return $this->messages = $messages->toArray();
+        $query = Message::where('sentFrom', $this->authenticatedUser->id)
+            ->where('sentTo', $this->selectedUser)
+            ->orWhere(function ($query) {
+                $query->where('sentFrom', $this->selectedUser)
+                    ->where('sentTo', $this->authenticatedUser->id);
+            })->get();
+
+        return $this->messages = $query->toArray();
     }
 
     public function sendMessage()
@@ -52,7 +55,7 @@ class Chat extends Component
 
 
         // $this->dispatch('input-value', data: $this->value);
-        // $this->value = '';
+        $this->value = '';
     }
 
 

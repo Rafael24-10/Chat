@@ -7,12 +7,21 @@ dark:border-gray-700 max-h-96 shadow-xl "
     <div class="w-3/12 bg-gray-700 bg-opacity-25 border-r overflow-y-scroll border-gray-700">
         <ul class="">
             @foreach ($users as $user)
-                <li wire:click="getUserMessages({{ $user['id'] }})"
-                    class="p-6 cursor-pointer text-lg dark:text-white text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-800">
-                    <p class="flex items-center">{{ $user['name'] }}
-                        <span class="ml-2 w-2 h-2  bg-blue-500 rounded-full"></span>
-                    </p>
-                </li>
+                @if ($selectedUser == $user['id'])
+                    <li wire:click="getUserMessages({{ $user['id'] }})"
+                        class="p-6 cursor-pointer text-lg dark:text-white bg-gray-800 text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-700">
+                        <p class="flex items-center">{{ $user['name'] }}
+                            <span class="ml-2 w-2 h-2  bg-blue-500 rounded-full"></span>
+                        </p>
+                    </li>
+                @else
+                    <li wire:click="getUserMessages({{ $user['id'] }})"
+                        class="p-6 cursor-pointer text-lg dark:text-white text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-700">
+                        <p class="flex items-center">{{ $user['name'] }}
+                            <span class="ml-2 w-2 h-2  bg-blue-500 rounded-full"></span>
+                        </p>
+                    </li>
+                @endif
             @endforeach
 
 
@@ -27,27 +36,14 @@ dark:border-gray-700 max-h-96 shadow-xl "
 
         <div class="w-full p-6 flex flex-col overflow-y-scroll">
 
-            {{-- <div class="w-full mb-3 text-right">
-                <p class="inline-block p-2 rounded-md   dark:text-white bg-indigo-300 bg-opacity-25"
-                    style="max-width: 75%">
-                    Olá
-                </p>
-                <span class="block mt-1 text-xs dark:text-white">27/04/2024 20:09</span>
-            </div>
-
-
-            <div class="w-full mb-3 ">
-                <p class="inline-block p-2 rounded-md dark:text-white bg-gray-300 bg-opacity-25 "
-                    style="max-width: 75%">
-                    lorem
-                </p>
-                <span class="block mt-1 text-xs dark:text-white">27/04/2024 20:09</span>
-            </div>
-
-             --}}
+        
             @if ($messages)
                 @foreach ($messages as $message)
-                    <livewire:sent-message :$message :key="$message['id']" />
+                    @if ($message['sentFrom'] == $authenticatedUser->id)
+                        <livewire:sent-message :$message :key="$message['id']" />
+                    @elseif($message['sentFrom'] == $selectedUser)
+                        <livewire:received-message :$message :key="$message['id']" />
+                    @endif
                 @endforeach
             @else
                 <h3>No messages bro hahah</h3>
