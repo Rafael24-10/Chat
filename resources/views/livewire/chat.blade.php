@@ -4,7 +4,8 @@ dark:border-gray-700 max-h-96 shadow-xl "
     style="min-height: 400px">
 
     {{-- friend List --}}
-    <div class="w-3/12 bg-gray-700 bg-opacity-25 border-r overflow-y-scroll border-gray-700">
+
+    <div class="w-3/12 bg-gray-700 bg-opacity-25 border-r overflow-y-auto border-gray-700">
         <ul class="">
             @foreach ($users as $user)
                 @if ($selectedUser == $user['id'])
@@ -29,14 +30,15 @@ dark:border-gray-700 max-h-96 shadow-xl "
         </ul>
     </div>
 
+
     {{-- Chat box --}}
     <div class="w-9/12 flex flex-col justify-between">
 
         {{-- Messages --}}
 
-        <div class="w-full p-6 flex flex-col overflow-y-scroll">
+        <div class="w-full p-6 flex flex-col overflow-y-auto">
 
-        
+
             @if ($messages)
                 @foreach ($messages as $message)
                     @if ($message['sentFrom'] == $authenticatedUser->id)
@@ -46,19 +48,24 @@ dark:border-gray-700 max-h-96 shadow-xl "
                     @endif
                 @endforeach
             @else
-                <h3>No messages bro hahah</h3>
+                <x-no-messages />
             @endif
         </div>
-        {{-- form box --}}
-        <div class="w-full bg-gray-700 bg-opacity-25 p-6 border-t border-gray-700">
-            <form wire:submit="sendMessage">
-                <div class="flex rounded-md overflow-hidden border border-gray-700">
-                    <input wire:model="value" type="text" class="flex-1 px-4 py-2 text-sm focus:outline-none">
-                    <button type="submit"
-                        class="bg-indigo-600 hover:bg-indigo-800 dark:text-white px-4 py-2">Send</button>
-                </div>
-            </form>
-        </div>
+
+        @if ($selectedUser != null)
+            {{-- form box --}}
+            <div class="w-full bg-gray-700 bg-opacity-25 p-6 border-t border-gray-700">
+                <form wire:submit="sendMessage">
+                    <div class="flex rounded-md overflow-hidden border border-gray-700">
+                        <input wire:model="value" type="text" class="flex-1 px-4 py-2 text-sm focus:outline-none"
+                            placeholder="Type a message">
+                        <button type="submit"
+                            class="bg-indigo-600 hover:bg-indigo-800 dark:text-white px-4 py-2">Send</button>
+                    </div>
+                </form>
+            </div>
+        @else
+        @endif
     </div>
 
 

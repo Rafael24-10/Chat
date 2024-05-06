@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sentFrom')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('sentTo')->references('id')->on('users')->onDelete('cascade');
-            $table->boolean('accepted');
+            $table->boolean('accepted')->default(0);
             $table->timestamps();
         });
     }

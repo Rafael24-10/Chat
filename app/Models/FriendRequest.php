@@ -9,6 +9,11 @@ class FriendRequest extends Model
 {
     use HasFactory;
 
+    public $fillable = [
+        'sentFrom',
+        'sentTo',
+    ];
+
     public function sender(){
         return $this->belongsTo(User::class, 'sentFrom');
     }
