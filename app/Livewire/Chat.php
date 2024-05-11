@@ -39,7 +39,7 @@ class Chat extends Component
             ->orWhere(function ($query) {
                 $query->where('sentFrom', $this->selectedUser)
                     ->where('sentTo', $this->authenticatedUser->id);
-            })->get();
+            })->orderBy('created_at')->get();
 
         return $this->messages = $query->toArray();
     }
@@ -52,9 +52,6 @@ class Chat extends Component
             'sentTo' => $this->selectedUser,
             'content' => $this->value
         ]);
-
-
-        // $this->dispatch('input-value', data: $this->value);
         $this->value = '';
     }
 

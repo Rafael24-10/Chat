@@ -16,12 +16,6 @@ class SendRequest extends Component
     public function mount()
     {
         $this->authenticatedUser = Auth::user();
-        // $this->users =  User::where('id', '!=', $this->authenticatedUser->id)->get()->map(function ($user) {
-        //     return [
-        //         'id' => $user->id,
-        //         'name' => $user->name
-        //     ];
-        // });
 
         $authenticatedUser = $this->authenticatedUser->id;
 

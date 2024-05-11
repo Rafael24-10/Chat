@@ -19,4 +19,8 @@ Route::middleware([
     Route::get('/users', function () {
         return view('users');
     })->name('users');
+
+    Route::get('/notifications', function () {
+        return view('notifications');
+    })->name('notifications');
 });
