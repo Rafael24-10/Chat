@@ -48,6 +48,14 @@ class ReceivedRequests extends Component
         $this->redirectRoute('notifications');
     }
 
+    public function declineRequest($userId)
+    {
+        $request = FriendRequest::where('sentFrom', $userId)->first();
+        $request->status = 'declined';
+        $request->save();
+        $this->redirectRoute('notifications');
+    }
+
     public function render()
     {
         return view('livewire.received-requests');

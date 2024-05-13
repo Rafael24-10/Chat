@@ -27,9 +27,6 @@ dark:border-gray-700 max-h-96 w-5/12 shadow-xl overflow-y-auto "
                     @endif
                 @endforeach
             @endforeach
-        @else
-            <h3>No new friend requests!</h3>
-
         @endif
 
 

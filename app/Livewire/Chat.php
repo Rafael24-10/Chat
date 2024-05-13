@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Friend;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -15,16 +16,18 @@ class Chat extends Component
     public $messages;
     public $authenticatedUser;
     public $selectedUser;
+    public $friends;
 
     public function mount()
     {
         $this->authenticatedUser = Auth::user();
-        $this->users =  User::where('name', '!=', $this->authenticatedUser->name)->get()->map(function ($user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name
-            ];
-        });
+        $friendIds = Friend::where('user_id', $this->authenticatedUser->id)
+            ->pluck('friend_id');
+
+        $this->friends = User::whereIn('id', $friendIds)->get();
+        if (!($this->friends)) {
+            return null;
+        }
     }
 
 

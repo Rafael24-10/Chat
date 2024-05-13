@@ -6,28 +6,32 @@ dark:border-gray-700 max-h-96 shadow-xl "
     {{-- friend List --}}
 
     <div class="w-3/12 bg-gray-700 bg-opacity-25 border-r overflow-y-auto border-gray-700">
-        <ul class="">
-            @foreach ($users as $user)
-                @if ($selectedUser == $user['id'])
-                    <li wire:click="getUserMessages({{ $user['id'] }})"
-                        class="p-6 cursor-pointer text-lg dark:text-white bg-gray-800 text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-700">
-                        <p class="flex items-center">{{ $user['name'] }}
-                            <span class="ml-2 w-2 h-2  bg-blue-500 rounded-full"></span>
-                        </p>
-                    </li>
-                @else
-                    <li wire:click="getUserMessages({{ $user['id'] }})"
-                        class="p-6 cursor-pointer text-lg dark:text-white text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-700">
-                        <p class="flex items-center">{{ $user['name'] }}
-                            <span class="ml-2 w-2 h-2  bg-blue-500 rounded-full"></span>
-                        </p>
-                    </li>
-                @endif
-            @endforeach
 
-
-
-        </ul>
+        @if (count($friends) == 0)
+            <div class="flex items-center justify-center py-4">
+                <h2 class="text-white">You don't have any friends yet. :( </h2>
+            </div>
+        @else
+            <ul class="">
+                @foreach ($friends as $friend)
+                    @if ($selectedUser == $friend['id'])
+                        <li wire:click="getUserMessages({{ $friend['id'] }})"
+                            class="p-6 cursor-pointer text-lg dark:text-white bg-gray-800 text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-700">
+                            <p class="flex items-center">{{ $friend['name'] }}
+                                <span class="ml-2 w-2 h-2  bg-blue-500 rounded-full"></span>
+                            </p>
+                        </li>
+                    @else
+                        <li wire:click="getUserMessages({{ $friend['id'] }})"
+                            class="p-6 cursor-pointer text-lg dark:text-white text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-700">
+                            <p class="flex items-center">{{ $friend['name'] }}
+                                <span class="ml-2 w-2 h-2  bg-blue-500 rounded-full"></span>
+                            </p>
+                        </li>
+                    @endif
+                @endforeach
+            </ul>
+        @endif
     </div>
 
 

@@ -17,6 +17,8 @@ dark:border-gray-700 max-h-96 w-5/12 shadow-xl overflow-y-auto "
                     @foreach ($user->receivedfriendRequests as $request)
                         @if ($request->status == 'pending')
                             <x-request-sent />
+                        @elseif($request->status == 'declined')
+                            <x-request-declined />
                         @else
                             <x-request-accepted />
                         @endif
