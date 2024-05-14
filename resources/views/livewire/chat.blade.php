@@ -96,6 +96,7 @@ dark:border-gray-700 max-h-96 shadow-xl "
 
 
 
+
     {{-- <div class="w-1/3 rounded shadow-lg h-full ">
         <ul class="space-y-1 overflow-y-scroll">
             <li

@@ -2,12 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use App\Models\Friend;
 use App\Models\Message;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
+use App\Events\sendMessage;
+use Illuminate\Support\Facades\Auth;
 
 class Chat extends Component
 {
@@ -17,6 +17,7 @@ class Chat extends Component
     public $authenticatedUser;
     public $selectedUser;
     public $friends;
+    public Message $message;
 
     public function mount()
     {
@@ -28,8 +29,16 @@ class Chat extends Component
         if (!($this->friends)) {
             return null;
         }
+
+        $this->message = new Message();
     }
 
+    public function getListeners()
+    {
+        return [
+            "echo-private:message.{$this->message->id}, sendMessage" => 'getUserMessages',
+        ];
+    }
 
     public function getUserMessages($id)
     {
@@ -50,11 +59,12 @@ class Chat extends Component
     public function sendMessage()
     {
         $this->authenticatedUser = Auth::user();
-        Message::create([
-            'sentFrom' => $this->authenticatedUser->id,
-            'sentTo' => $this->selectedUser,
-            'content' => $this->value
-        ]);
+        $message = new Message();
+        $message->sentFrom = $this->authenticatedUser->id;
+        $message->sentTo = $this->selectedUser;
+        $message->content = $this->value;
+
+        sendMessage::dispatch($message);
         $this->value = '';
     }
 
