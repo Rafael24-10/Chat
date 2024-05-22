@@ -6,18 +6,17 @@ use App\Models\User;
 use App\Models\Friend;
 use App\Models\Message;
 use Livewire\Component;
-use App\Events\sendMessage;
+use App\Events\SendMessage;
+use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 
 class Chat extends Component
 {
     public $value = '';
-    public $users;
     public $messages;
     public $authenticatedUser;
     public $selectedUser;
     public $friends;
-    public Message $message;
 
     public function mount()
     {
@@ -29,23 +28,24 @@ class Chat extends Component
         if (!($this->friends)) {
             return null;
         }
-
-        $this->message = new Message();
     }
 
-    public function getListeners()
-    {
-        return [
-            "echo-private:message.{$this->message->id}, sendMessage" => 'getUserMessages',
-        ];
-    }
+    // public function getListeners()
+    // {
+    //     return ["echo-private:user.{authenticatedUser.id}, SendMessage" => 'newMessages'];
+    // }
+
+    // public function newMessages($message)
+    // {
+    //     dd($message);
+    //     $this->getUserMessages($this->selectedUser);
+    // }
 
     public function getUserMessages($id)
     {
 
         $this->authenticatedUser = Auth::user();
         $this->selectedUser = $id;
-
         $query = Message::where('sentFrom', $this->authenticatedUser->id)
             ->where('sentTo', $this->selectedUser)
             ->orWhere(function ($query) {
@@ -64,7 +64,9 @@ class Chat extends Component
         $message->sentTo = $this->selectedUser;
         $message->content = $this->value;
 
-        sendMessage::dispatch($message);
+        $this->dispatch('newMessage',  $this->authenticatedUser->id,  $message->sentTo);
+        SendMessage::dispatch($message);
+        $this->getUserMessages($this->selectedUser);
         $this->value = '';
     }
 

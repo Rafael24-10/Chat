@@ -8,6 +8,8 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('message.{messageId}', function (User $user, int $messageId) {
-    return $user->id === Message::find($messageId)->user_id;
+Broadcast::channel('chat.{userId1}.{userId2}', function (User $user, $userId1, $userId2) {
+    $sortIsAscending = [$userId1, $userId2];
+    sort($sortIsAscending);
+    return (int) $user->id === (int) $sortIsAscending[0] || (int) $user->id === (int) $sortIsAscending[1];
 });

@@ -2,10 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Events\sendMessage;
 use App\Models\Message;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Events\SendMessage;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class sendMessagesUpdate
 {
@@ -20,14 +20,13 @@ class sendMessagesUpdate
     /**
      * Handle the event.
      */
-    public function handle(sendMessage $event): void
+    public function handle(SendMessage $event): void
     {
         $messageData = $event->message;
         Message::create([
             'sentFrom' => $messageData['sentFrom'],
             'sentTo' => $messageData['sentTo'],
             'content' => $messageData['content']
-
         ]);
     }
 }

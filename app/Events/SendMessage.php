@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class sendMessage implements ShouldBroadcast
+class SendMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,6 +22,12 @@ class sendMessage implements ShouldBroadcast
     public function __construct(Message $message)
     {
         $this->message = $message;
+        // $sentFrom = $this->message->sentFrom;
+        // $sentTo = $this->message->sentTo;
+        // $sortIdsAscending = [$sentFrom, $sentTo];
+        // sort($sortIdsAscending);
+        // dd($sortIdsAscending);
+        // dd($this->message);
     }
 
 
@@ -30,8 +36,18 @@ class sendMessage implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): Channel
+    public function broadcastOn(): PrivateChannel
     {
-        return new PrivateChannel('message.'. $this->message->id);
+        $sentFrom = $this->message->sentFrom;
+        $sentTo = $this->message->sentTo;
+        $sortIdsAscending = [$sentFrom, $sentTo];
+        sort($sortIdsAscending);
+
+        return new PrivateChannel('chat.' . $sortIdsAscending[0] . $sortIdsAscending[1]);
+    }
+
+    public function broadcastWith()
+    {
+        return ['message' => $this->message->content];
     }
 }

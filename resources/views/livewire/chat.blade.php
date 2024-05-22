@@ -1,6 +1,6 @@
 <div class=" flex bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 
 dark:via-transparent border rounded-lg border-gray-200 
-dark:border-gray-700 max-h-96 shadow-xl "
+dark:border-gray-700 max-h-96 shadow-xl"
     style="min-height: 400px">
 
     {{-- friend List --}}
@@ -36,7 +36,7 @@ dark:border-gray-700 max-h-96 shadow-xl "
 
 
     {{-- Chat box --}}
-    <div class="w-9/12 flex flex-col justify-between">
+    <div class="w-9/12 flex flex-col justify-between ">
 
         {{-- Messages --}}
 
@@ -71,80 +71,18 @@ dark:border-gray-700 max-h-96 shadow-xl "
         @else
         @endif
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    {{-- <div class="w-1/3 rounded shadow-lg h-full ">
-        <ul class="space-y-1 overflow-y-scroll">
-            <li
-                class="h-20 bg-gray-700 rounded flex cursor-pointer justify-center items-center shadow-lg hover:bg-gray-600">
-                <p class="font-bold text-xl dark:text-white ">Nome</p>
-            </li>
-            <li
-                class="h-20 bg-gray-700 rounded flex cursor-pointer justify-center items-center shadow-lg hover:bg-gray-600">
-                <p class="font-bold text-xl dark:text-white ">Nome</p>
-            </li>
-            <li
-                class="h-20 bg-gray-700 rounded flex cursor-pointer justify-center items-center shadow-lg hover:bg-gray-600">
-                <p class="font-bold text-xl dark:text-white ">Nome</p>
-            </li>
-            <li
-                class="h-20 bg-gray-700 rounded flex cursor-pointer justify-center items-center shadow-lg hover:bg-gray-600">
-                <p class="font-bold text-xl dark:text-white ">Nome</p>
-            </li>
-            <li
-                class="h-20 bg-gray-700 rounded flex cursor-pointer justify-center items-center shadow-lg hover:bg-gray-600">
-                <p class="font-bold text-xl dark:text-white ">Nome</p>
-            </li>
-            <li
-                class="h-20 bg-gray-700 rounded flex cursor-pointer justify-center items-center shadow-lg hover:bg-gray-600">
-                <p class="font-bold text-xl dark:text-white ">Nome</p>
-            </li>
-            <li
-                class="h-20 bg-gray-700 rounded flex cursor-pointer justify-center items-center shadow-lg hover:bg-gray-600">
-                <p class="font-bold text-xl dark:text-white ">Nome</p>
-            </li>
-            
-        </ul>
-    </div>
-    
-    <div class="w-2/3 flex right-0 bottom-0 absolute rounded bg-white min-h-14">
-        <input class="w-full  bg-gray-700 text-white focus:border-transparent"
-            type="text">
-        <button class="w-36 border-0 dark:text-white hover:bg-violet-600  bg-violet-500">Send</button>
-    </div> --}}
-</div>
-
-
-{{-- <div class="w-2/3 flex justify-between ">
-    <div class="bg-gray-700 h-10 w-28 mt-10 ml-4 flex justify-center items-center rounded-full">
-        <p class="dark:text-white ">Mensagem</p>
-    </div>
-
-    <div class="bg-violet-800 min-h-10 h-auto max-w-28 w-28 mt-20 mr-4 flex justify-center items-center rounded-full">
-        <p class="dark:text-white "></p>
-    </div>
-</div> --}}
+    @script
+        <script>
+            $wire.on('newMessage', (Ids) => {
+                Ids.sort();
+                try {
+                    window.Echo.private('chat.' + Ids[0] + '.' + Ids[1])
+                        .listen('SendMessage', (e) => {
+                            console.log(e.message);
+                        });
+                } catch (error) {
+                    console.error('An error occurred:', error);
+                }
+            })
+        </script>
+    @endscript
