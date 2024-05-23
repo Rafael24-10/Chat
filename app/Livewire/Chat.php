@@ -40,7 +40,13 @@ class Chat extends Component
     //     dd($message);
     //     $this->getUserMessages($this->selectedUser);
     // }
+    #[On('echo:chat,SendMessage')]
+    public function newMessages()
+    {
+        $this->messages = $this->getUserMessages($this->selectedUser);
+        $this->dispatch('newMessage');
 
+    }
     public function getUserMessages($id)
     {
 
@@ -54,6 +60,8 @@ class Chat extends Component
             })->orderBy('created_at')->get();
 
         return $this->messages = $query->toArray();
+        
+
     }
 
     public function sendMessage()
@@ -64,9 +72,9 @@ class Chat extends Component
         $message->sentTo = $this->selectedUser;
         $message->content = $this->value;
 
-        $this->dispatch('newMessage',  $this->authenticatedUser->id,  $message->sentTo);
         SendMessage::dispatch($message);
         $this->getUserMessages($this->selectedUser);
+        $this->dispatch('newMessage');
         $this->value = '';
     }
 

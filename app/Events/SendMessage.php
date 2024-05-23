@@ -4,14 +4,15 @@ namespace App\Events;
 
 use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class SendMessage implements ShouldBroadcast
+class SendMessage implements ShouldBroadcastNow 
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -34,20 +35,21 @@ class SendMessage implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return <int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): PrivateChannel
+    public function broadcastOn(): Channel
     {
-        $sentFrom = $this->message->sentFrom;
-        $sentTo = $this->message->sentTo;
-        $sortIdsAscending = [$sentFrom, $sentTo];
-        sort($sortIdsAscending);
+        // $sentFrom = $this->message->sentFrom;
+        // $sentTo = $this->message->sentTo;
+        // $sortIdsAscending = [$sentFrom, $sentTo];
+        // sort($sortIdsAscending);
+        // $sortIdsAscending[0] . $sortIdsAscending[1]
 
-        return new PrivateChannel('chat.' . $sortIdsAscending[0] . $sortIdsAscending[1]);
+        return new Channel('chat');
     }
 
-    public function broadcastWith()
-    {
-        return ['message' => $this->message->content];
-    }
+    // public function broadcastWith()
+    // {
+    //     return ['message' => $this->message->content];
+    // }
 }

@@ -40,7 +40,7 @@ dark:border-gray-700 max-h-96 shadow-xl"
 
         {{-- Messages --}}
 
-        <div class="w-full p-6 flex flex-col overflow-y-auto">
+        <div class="w-full p-6 flex flex-col overflow-y-auto" id="chat">
 
 
             @if ($messages)
@@ -73,16 +73,16 @@ dark:border-gray-700 max-h-96 shadow-xl"
     </div>
     @script
         <script>
-            $wire.on('newMessage', (Ids) => {
-                Ids.sort();
-                try {
-                    window.Echo.private('chat.' + Ids[0] + '.' + Ids[1])
-                        .listen('SendMessage', (e) => {
-                            console.log(e.message);
-                        });
-                } catch (error) {
-                    console.error('An error occurred:', error);
-                }
-            })
+            function scrollToBottom() {
+                const element = document.getElementById("chat");
+                element.scrollTop = element.scrollHeight;
+            }
+
+            $wire.on('newMessage', function() {
+                const element = document.getElementById("chat");
+
+                element.scrollTop = element.scrollHeight;
+
+            });
         </script>
     @endscript
