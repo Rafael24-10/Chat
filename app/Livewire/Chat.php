@@ -17,6 +17,7 @@ class Chat extends Component
     public $authenticatedUser;
     public $selectedUser;
     public $friends;
+    public $Ids;
 
     public function mount()
     {
@@ -30,22 +31,30 @@ class Chat extends Component
         }
     }
 
-    // public function getListeners()
-    // {
-    //     return ["echo-private:user.{authenticatedUser.id}, SendMessage" => 'newMessages'];
-    // }
+    private function sortIds(int $sentFrom, int $sentTo)
+    {
+        $array = [$sentFrom, $sentTo];
+        $this->Ids = sort($array);
+    }
 
-    // public function newMessages($message)
-    // {
-    //     dd($message);
-    //     $this->getUserMessages($this->selectedUser);
-    // }
-    #[On('echo:chat,SendMessage')]
+
+    // #[On('echo-private:chat.{Ids[0]}.{Ids[1]},SendMessage')]
+    public function getListeners()
+    {
+        if ($this->Ids) {
+
+
+            return [
+                "echo-private:chat.{$this->Ids[0]}.{$this->Ids[1]},SendMessage" => 'newMessages',
+            ];
+        }else{
+            return [];
+        }
+    }
     public function newMessages()
     {
         $this->messages = $this->getUserMessages($this->selectedUser);
         $this->dispatch('newMessage');
-
     }
     public function getUserMessages($id)
     {
@@ -60,8 +69,6 @@ class Chat extends Component
             })->orderBy('created_at')->get();
 
         return $this->messages = $query->toArray();
-        
-
     }
 
     public function sendMessage()
@@ -71,10 +78,16 @@ class Chat extends Component
         $message->sentFrom = $this->authenticatedUser->id;
         $message->sentTo = $this->selectedUser;
         $message->content = $this->value;
+        $m = [
+            "sentFrom" => $message->sentFrom,
+            "sentTo" => $message->sentTo
+        ];
+
+        $this->sortIds($message->sentFrom, $message->sentTo);
 
         SendMessage::dispatch($message);
         $this->getUserMessages($this->selectedUser);
-        $this->dispatch('newMessage');
+        $this->dispatch('newMessage', $m);
         $this->value = '';
     }
 

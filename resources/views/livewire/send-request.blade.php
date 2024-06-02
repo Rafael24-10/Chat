@@ -9,10 +9,11 @@ dark:border-gray-700 max-h-96 w-5/12 shadow-xl overflow-y-auto "
         @foreach ($users as $user)
             <li
                 class="h-12 bg-transparent flex items-center justify-between pl-4 pr-4 mt-2 pb-2 text-lg border-b border-black dark:border-gray-700">
-                <p class="text-white">{{ $user['name'] }}</p>
+                <p class="text-white min-[320px]:text-sm">{{ $user['name'] }}</p>
                 <button wire:click="makeRequest({{ $user['id'] }})"
-                    class="bg-indigo-600 hover:bg-indigo-800 dark:text-white px-4 py-2 rounded-lg">Add
+                    class="bg-indigo-600 hover:bg-indigo-800 dark:text-white px-4 py-2 rounded-lg min-[320px]:text-sm min-[320px]:px-2 ">Add
                     friend</button>
+                {{-- <x-send-request-button wire:click="makeRequest({{ $user['id'] }})" /> --}}
             </li>
         @endforeach
     </ul>

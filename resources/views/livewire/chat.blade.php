@@ -16,7 +16,8 @@ dark:border-gray-700 max-h-96 shadow-xl"
                 @foreach ($friends as $friend)
                     @if ($selectedUser == $friend['id'])
                         <li wire:click="getUserMessages({{ $friend['id'] }})"
-                            class="p-6 cursor-pointer text-lg dark:text-white bg-gray-800 text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-700">
+                            class="p-6 cursor-pointer text-lg dark:text-white bg-gray-800 text-gray-600 font-semibold border-b border-gray-700 hover:bg-gray-700"
+                            style="min-width: 100px">
                             <p class="flex items-center">{{ $friend['name'] }}
                                 <span class="ml-2 w-2 h-2  bg-blue-500 rounded-full"></span>
                             </p>
@@ -73,6 +74,21 @@ dark:border-gray-700 max-h-96 shadow-xl"
     </div>
     @script
         <script>
+            $wire.on('newMessage', function(e) {
+                var userId1 = e[0].sentFrom;
+                var userId2 = e[0].sentTo;
+                var Ids = [userId1, userId2];
+                Ids.sort((x, y) => x - y);
+                window.Echo.private(`chat.${Ids[0]}.${Ids[1]}`)
+                    .listen('SendMessage', (e) => {
+                        console.log(e.message);
+                    });
+            })
+
+
+
+
+
             function scrollToBottom() {
                 const element = document.getElementById("chat");
                 element.scrollTop = element.scrollHeight;

@@ -12,7 +12,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class SendMessage implements ShouldBroadcastNow 
+class SendMessage implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,12 +23,6 @@ class SendMessage implements ShouldBroadcastNow
     public function __construct(Message $message)
     {
         $this->message = $message;
-        // $sentFrom = $this->message->sentFrom;
-        // $sentTo = $this->message->sentTo;
-        // $sortIdsAscending = [$sentFrom, $sentTo];
-        // sort($sortIdsAscending);
-        // dd($sortIdsAscending);
-        // dd($this->message);
     }
 
 
@@ -37,19 +31,14 @@ class SendMessage implements ShouldBroadcastNow
      *
      * @return <int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): Channel
+    public function broadcastOn(): PrivateChannel
     {
-        // $sentFrom = $this->message->sentFrom;
-        // $sentTo = $this->message->sentTo;
-        // $sortIdsAscending = [$sentFrom, $sentTo];
-        // sort($sortIdsAscending);
-        // $sortIdsAscending[0] . $sortIdsAscending[1]
+        $sentFrom = $this->message->sentFrom;
+        $sentTo = $this->message->sentTo;
+        $sortIdsAscending = [$sentFrom, $sentTo];
+        sort($sortIdsAscending);
+        $sortIdsAscending[0] . $sortIdsAscending[1];
 
-        return new Channel('chat');
+        return new PrivateChannel('chat.' . $sortIdsAscending[0] . '.' . $sortIdsAscending[1]);
     }
-
-    // public function broadcastWith()
-    // {
-    //     return ['message' => $this->message->content];
-    // }
 }
