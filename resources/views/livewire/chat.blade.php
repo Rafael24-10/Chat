@@ -74,17 +74,17 @@ dark:border-gray-700 max-h-96 shadow-xl"
     </div>
     @script
         <script>
-            $wire.on('newMessage', function(e) {
-                var userId1 = e[0].sentFrom;
-                var userId2 = e[0].sentTo;
-                var Ids = [userId1, userId2];
-                Ids.sort((x, y) => x - y);
-                window.Echo.private(`chat.${Ids[0]}.${Ids[1]}`)
-                    .listen('SendMessage', (e) => {
-                        console.log(e.message);
-                    });
-            })
-
+            // $wire.on('newMessage', function(e) {
+            //     var userId1 = e[0].sentFrom;
+            //     var userId2 = e[0].sentTo;
+            //     var Ids = [userId1, userId2];
+            //     Ids.sort((x, y) => x - y);
+            // })
+            
+            window.Echo.private('chat')
+                .listen('SendMessage', (e) => {
+                    console.log(e.message);
+                });
 
 
 

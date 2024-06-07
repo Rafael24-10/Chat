@@ -38,19 +38,8 @@ class Chat extends Component
     }
 
 
-    // #[On('echo-private:chat.{Ids[0]}.{Ids[1]},SendMessage')]
-    public function getListeners()
-    {
-        if ($this->Ids) {
-
-
-            return [
-                "echo-private:chat.{$this->Ids[0]}.{$this->Ids[1]},SendMessage" => 'newMessages',
-            ];
-        }else{
-            return [];
-        }
-    }
+     #[On('echo-private:chat,SendMessage')]
+    
     public function newMessages()
     {
         $this->messages = $this->getUserMessages($this->selectedUser);
@@ -78,16 +67,16 @@ class Chat extends Component
         $message->sentFrom = $this->authenticatedUser->id;
         $message->sentTo = $this->selectedUser;
         $message->content = $this->value;
-        $m = [
-            "sentFrom" => $message->sentFrom,
-            "sentTo" => $message->sentTo
-        ];
+        // $m = [
+        //     "sentFrom" => $message->sentFrom,
+        //     "sentTo" => $message->sentTo
+        // ];
 
         $this->sortIds($message->sentFrom, $message->sentTo);
 
         SendMessage::dispatch($message);
         $this->getUserMessages($this->selectedUser);
-        $this->dispatch('newMessage', $m);
+        // $this->dispatch('newMessage', $m);
         $this->value = '';
     }
 

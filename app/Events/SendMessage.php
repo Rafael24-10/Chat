@@ -33,12 +33,12 @@ class SendMessage implements ShouldBroadcastNow
      */
     public function broadcastOn(): PrivateChannel
     {
-        $sentFrom = $this->message->sentFrom;
-        $sentTo = $this->message->sentTo;
-        $sortIdsAscending = [$sentFrom, $sentTo];
-        sort($sortIdsAscending);
-        $sortIdsAscending[0] . $sortIdsAscending[1];
+        // $sentFrom = $this->message->sentFrom;
+        // $sentTo = $this->message->sentTo;
+        // $sortIdsAscending = [$sentFrom, $sentTo];
+        // sort($sortIdsAscending);
+        // $sortIdsAscending[0] . $sortIdsAscending[1];
 
-        return new PrivateChannel('chat.' . $sortIdsAscending[0] . '.' . $sortIdsAscending[1]);
+        return new PrivateChannel('chat');
     }
 }
