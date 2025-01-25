@@ -30,16 +30,6 @@ class Chat extends Component
         }
     }
 
-    // public function getListeners()
-    // {
-    //     return ["echo-private:user.{authenticatedUser.id}, SendMessage" => 'newMessages'];
-    // }
-
-    // public function newMessages($message)
-    // {
-    //     dd($message);
-    //     $this->getUserMessages($this->selectedUser);
-    // }
     #[On('echo:chat,SendMessage')]
     public function newMessages()
     {

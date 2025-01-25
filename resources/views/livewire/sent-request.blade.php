@@ -8,14 +8,15 @@ dark:border-gray-700 max-h-96 w-5/12 shadow-xl overflow-y-auto "
     </div>
 
     <ul>
+        {{-- @dd($authenticatedUser) --}}
 
         @foreach ($users as $user)
-            @if ($user['id'] != $authenticatedUser->id)
+            {{-- @if ($user['id'] != $authenticatedUser->id) --}}
                 <li
                     class="h-12 bg-transparent flex items-center justify-between pl-4 pr-4 mt-2 pb-2 text-lg border-b border-black dark:border-gray-700">
                     <p class="text-white">{{ $user['name'] }}</p>
                     @foreach ($user->receivedfriendRequests as $request)
-                        @if ($request->status == 'pending')
+                    @if ($request->status == 'pending')
                             <x-request-sent />
                         @elseif($request->status == 'declined')
                             <x-request-declined />
@@ -24,7 +25,7 @@ dark:border-gray-700 max-h-96 w-5/12 shadow-xl overflow-y-auto "
                         @endif
                     @endforeach
                 </li>
-            @endif
+            {{-- @endif --}}
         @endforeach
 
     </ul>

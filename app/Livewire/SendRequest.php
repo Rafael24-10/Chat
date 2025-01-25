@@ -32,14 +32,11 @@ class SendRequest extends Component
             'sentTo' => $sentTo,
         ]);
 
+        $this->dispatch("newRequestSent");
+
         return redirect()->route('users');
     }
 
-    public function getUserRequests()
-    {
-
-        FriendRequest::all()->where('sentFrom', $this->authenticatedUser->id);
-    }
 
     public function render()
     {

@@ -23,12 +23,7 @@ class SendMessage implements ShouldBroadcastNow
     public function __construct(Message $message)
     {
         $this->message = $message;
-        // $sentFrom = $this->message->sentFrom;
-        // $sentTo = $this->message->sentTo;
-        // $sortIdsAscending = [$sentFrom, $sentTo];
-        // sort($sortIdsAscending);
-        // dd($sortIdsAscending);
-        // dd($this->message);
+        
     }
 
 
@@ -39,17 +34,8 @@ class SendMessage implements ShouldBroadcastNow
      */
     public function broadcastOn(): Channel
     {
-        // $sentFrom = $this->message->sentFrom;
-        // $sentTo = $this->message->sentTo;
-        // $sortIdsAscending = [$sentFrom, $sentTo];
-        // sort($sortIdsAscending);
-        // $sortIdsAscending[0] . $sortIdsAscending[1]
-
         return new Channel('chat');
     }
 
-    // public function broadcastWith()
-    // {
-    //     return ['message' => $this->message->content];
-    // }
+    
 }

@@ -17,3 +17,8 @@ window.Echo.channel('chat')
     .listen('SendMessage', (e) => {
         console.log(e.message);
     });
+
+    window.Echo.channel('newRequestSentChannel')
+    .listen('newRequestSent', (e) => {
+        console.log(e.message);
+    });

@@ -12,15 +12,23 @@ class SentRequest extends Component
 {
     public $users;
     public $authenticatedUser;
-     public function mount()
-     {
-         $this->authenticatedUser = Auth::user();
-         $authenticatedUser = $this->authenticatedUser->id;
 
-         $this->users = User::with(['receivedfriendRequests' => function ($query) use ($authenticatedUser) {
-             $query->where('sentFrom', $authenticatedUser)->select('sentTo', 'status');
-         }])->has('receivedfriendRequests')->get();
-     }
+    public function mount()
+    {
+        $this->authenticatedUser = Auth::user();
+        $this->getSentFriendRequests();
+    }
+
+    private function getSentFriendRequests()
+    {
+        $authenticatedUser = $this->authenticatedUser->id;
+
+        $this->users = User::whereHas('receivedfriendRequests', function ($query) use ($authenticatedUser) {
+            $query->where('sentFrom', $authenticatedUser);
+        })->with(['receivedfriendRequests' => function ($query) use ($authenticatedUser) {
+            $query->where('sentFrom', $authenticatedUser)->select('sentTo', 'status', 'sentFrom');
+        }])->get();
+    }
 
 
 
